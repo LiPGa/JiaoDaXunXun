@@ -154,15 +154,15 @@ class IndexFiles(object):
                                 doc.add(Field("rate",rate, t2))
 
                                 if type(scents_list[0])!=list:
-                                    for scent in scents_list:
-                                        doc.add(Field("scents",scent, t1))
+                                    scents=' '.join(scents_list)
+                                    doc.add(Field("scents",scents, t3))
                                 else:
-                                    for former_scent in scents_list[0]:
-                                        doc.add(Field("former_scents",former_scent,t1))
-                                    for mid_scent in scents_list[1]:
-                                        doc.add(Field("mid_scents",mid_scent,t1))
-                                    for last_scent in scents_list[2]:
-                                        doc.add(Field("last_scents",mid_scent,t1))
+                                    former_scents=' '.join(scents_list[0])
+                                    doc.add(Field("former_scents",former_scents,t3))
+                                    mid_scents=' '.join(scents_list[1])
+                                    doc.add(Field("mid_scents",mid_scents,t3))
+                                    last_scents=' '.join(scents_list[2])
+                                    doc.add(Field("last_scents",last_scents,t3))
                             except Exception,e:
                                 print "Failed in indexDocs:", e
                                 print line
