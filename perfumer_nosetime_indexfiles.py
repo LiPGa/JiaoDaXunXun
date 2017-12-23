@@ -150,8 +150,8 @@ class IndexFiles(object):
                                 if brand not in brand_list:
                                     brand_list.append(brand)
 
-                                doc.add(Field("comment",comments, t2))
-                                doc.add(Field("rate",rate, t2))
+                                doc.add(Field("comment",comments, t1))
+                                doc.add(Field("rate",rate, t1))
 
                                 if type(scents_list[0])!=list:
                                     scents=' '.join(scents_list)
