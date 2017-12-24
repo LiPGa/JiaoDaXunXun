@@ -10,6 +10,6 @@ searching for perfume
 4. 香调tune
 5. 评分rate
 6. 评价数comment
-7. 气味s
+7. 气味scents/前后中调former_scents,mid_scents,last_scents
 
 > brand索引目录其实可以不用。
