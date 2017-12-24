@@ -62,7 +62,7 @@ def run(searcher, analyzer):
     def price_sort(command):
         query = QueryParser(Version.LUCENE_CURRENT, "name",
                             analyzer).parse(command)
-        scoreDocs = searcher.search(query, 20).scoreDocs
+        scoreDocs = searcher.search(query, 8).scoreDocs
         # sorter = search.Sort(search.SortField('price', search.SortField.Type.STRING))
         # topdocs = searcher.search(query, None, 10, sorter)
         # print "%s total matching documents." % len(topdocs.scoreDocs)
@@ -84,17 +84,42 @@ def run(searcher, analyzer):
             print 'Perfume:',hit['name']
             print 'Price:',hit['price']
             print 'img:',hit['img']
+            print 'Sales:',hit['sales']
             print 'comments:',hit['comments']
             print 'Shop:',hit['shop']
             print 'Place:',hit['place']
-            # print 'post:',doc.get('post')
-            # print 'url:', doc.get('url')
-            # print 'img:',doc.get('img')
-            # print 'sales:',doc.get('sales')
-            # print 'comments:',doc.get('comment')  
+    def sales_sort(command):
+        query = QueryParser(Version.LUCENE_CURRENT, "name",
+                            analyzer).parse(command)
+        scoreDocs = searcher.search(query, 8).scoreDocs
+        # sorter = search.Sort(search.SortField('price', search.SortField.Type.STRING))
+        # topdocs = searcher.search(query, None, 10, sorter)
+        # print "%s total matching documents." % len(topdocs.scoreDocs)
+        # for scoredoc in topdocs.scoreDocs:
+        #     doc = searcher.doc(scoredoc.doc)
+        print "%s total matching documents." % len(scoreDocs)
+        indexer = engine.Indexer()
+        l='name','price','comments','sales','url','img','place','shop'
+        for i in l:
+            indexer.set(i,stored=True, tokenized=False)
+        for scoreDoc in scoreDocs:
+            doc = searcher.doc(scoreDoc.doc)          
+            indexer.add(name=doc.get('name'),price=doc.get('price'),comments=doc.get('comments'),sales=doc.get('sales'),url=doc.get('url'),img=doc.get('img'),shop=doc.get('shop'),place=doc.get('place'))
+            # print doc.get('sales')
+        indexer.commit()
+        hits = list(indexer.search(sort='sales'))[::-1]
+        for hit in hits:
+            print '------------------------------------------------------------------------------------------------------------'
+            print 'Perfume:',hit['name']
+            print 'Price:',hit['price']
+            print 'Sales:',hit['sales']
+            print 'img:',hit['img']
+            print 'comments:',hit['comments']
+            print 'Shop:',hit['shop']
+            print 'Place:',hit['place']
 
     command="Hermes 爱马仕Terre D\u0027Hermes 大地中性男士淡香水50ml100ML包邮"
-    price_sort(command)
+    sales_sort(command)
 
 
 if __name__ == '__main__':
