@@ -27,67 +27,79 @@ some cases.
 
 def run(searcher, analyzer):
     def perfume_search(command):
-        query = QueryParser(Version.LUCENE_CURRENT, "perfume",
-                            analyzer).parse(command)
-        scoreDocs = searcher.search(query, 1).scoreDocs
-        print "%s total matching documents." % len(scoreDocs)
-
-        for scoreDoc in scoreDocs:
-            doc = searcher.doc(scoreDoc.doc)
-            print "--------------------------------------------------------"
-            print 'perfume:',doc.get('perfume')
-            if doc.get('perfume')==command:
-              print 'MATCH!'
-            print 'perfumer',doc.get('name')
-            if doc.get('scents')==None:
-                print 'former:',doc.get('former_scents')
-                print 'mid:',doc.get('mid_scents')
-                print 'last:',doc.get('last_scents')
-            else:
-                print 'scents',doc.get('scents')
-            print 'url:', doc.get('url')
-            print 'rate:',doc.get('rate')
-    def perfumer_search(command):
         query = QueryParser(Version.LUCENE_CURRENT, "name",
                             analyzer).parse(command)
-        scoreDocs = searcher.search(query, 50).scoreDocs
+        scoreDocs = searcher.search(query, 8).scoreDocs
         print "%s total matching documents." % len(scoreDocs)
 
         for scoreDoc in scoreDocs:
             doc = searcher.doc(scoreDoc.doc)
             print "--------------------------------------------------------"
-            print 'perfume:',doc.get('perfume')
-            print 'perfumer',doc.get('name')
-            if doc.get('scents')==None:
+            print 'perfume:',doc.get('name')
+            if doc.get('name')==command:
+              print '100% MATCH!'
+            print 'perfumer',doc.get('perfumer')
+            if doc.get('former_scents')!=None:
                 print 'former:',doc.get('former_scents')
                 print 'mid:',doc.get('mid_scents')
                 print 'last:',doc.get('last_scents')
             else:
                 print 'scents',doc.get('scents')
+            print 'tune:',doc.get('tune')
             print 'url:', doc.get('url')
-            print 'rate:',doc.get('rate')
+            print 'brand:',doc.get('brand')
+            print 'rate:',float(doc.get('rate'))
+            print 'comments:',doc.get('comment')
+
+    def perfumer_search(command):
+        query = QueryParser(Version.LUCENE_CURRENT, "perfumer",
+                            analyzer).parse(command)
+        scoreDocs = searcher.search(query, 8).scoreDocs
+        print "%s total matching documents." % len(scoreDocs)
+
+        for scoreDoc in scoreDocs:
+            doc = searcher.doc(scoreDoc.doc)
+            print "--------------------------------------------------------"
+            print 'perfume:',doc.get('name')
+            if doc.get('name')==command:
+              print '100% MATCH!'
+            print 'perfumer',doc.get('perfumer')
+            if doc.get('former_scents')!=None:
+                print 'former:',doc.get('former_scents')
+                print 'mid:',doc.get('mid_scents')
+                print 'last:',doc.get('last_scents')
+            else:
+                print 'scents:',doc.get('scents')
+            print 'tune:',doc.get('tune')
+            print 'url:', doc.get('url')
+            print 'brand:',doc.get('brand')
+            print 'rate:',float(doc.get('rate'))
+            print 'comments:',doc.get('comment')
 
     def scent_search(command):
-        query = QueryParser(Version.LUCENE_CURRENT, "scents",
+        query = QueryParser(Version.LUCENE_CURRENT, "former_scents",
                             analyzer).parse(command)
-        scoreDocs = searcher.search(query, 50).scoreDocs
+        scoreDocs = searcher.search(query, 8).scoreDocs
         print "%s total matching documents." % len(scoreDocs)
 
         for scoreDoc in scoreDocs:
             doc = searcher.doc(scoreDoc.doc)
             print "--------------------------------------------------------"
-            print 'perfume:',doc.get('perfume')
-            print 'perfumer',doc.get('name')
-            if doc.get('scents')==None:
+            print 'perfume:',doc.get('name')
+            print 'perfumer:',doc.get('perfumer')
+            if doc.get('former_scents')!=None:
                 print 'former:',doc.get('former_scents')
                 print 'mid:',doc.get('mid_scents')
                 print 'last:',doc.get('last_scents')
             else:
-                print 'scents',doc.get('scents')
+                print 'scents:',doc.get('scents')
+            print 'tune:',doc.get('tune')
             print 'url:', doc.get('url')
-            print 'rate:',doc.get('rate')
+            print 'brand:',doc.get('brand')
+            print 'rate:',float(doc.get('rate'))
+            print 'comments:',doc.get('comment')
 
-    command="现货 法国爱马仕蓝色海洋橘彩星光香水2017年新品蔚蓝100ml"
+    command="法国Hermes爱马仕蓝色橘彩星光女士淡香水EDT50100ml清新礼物包邮"
     perfume_search(command)
 
 
