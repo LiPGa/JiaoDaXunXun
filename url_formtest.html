@@ -2,22 +2,21 @@ $def with(form)
 <!DOCTYPE html>
 <html>
 	<head>
-
 	<meta charset="utf-8">
 
 	<link rel="shortcut icon" href="../favicon.ico"> 
-	<link rel="stylesheet" type="text/css" href="css/default.css" />
-	<link rel="stylesheet" type="text/css" href="css/component.css" />
-	<link rel="stylesheet" type="text/css" href="css/component1.css" />
-	<script src="js/modernizr.custom.js"></script>
-	<script src="js/modernizr-custom.js"></script>
-	<script type="text/javascript" src="js/lrscroll.js"></script>
+	<link rel="stylesheet" type="text/css" href="static/css/default.css" />
+	<link rel="stylesheet" type="text/css" href="static/css/component.css" />
+	<link rel="stylesheet" type="text/css" href="static/css/component1.css" />
+	<script src="static/js/modernizr.custom.js"></script>
+	<script src="static/js/modernizr-custom.js"></script>
+	<!-- <script type="text/javascript" src="static/js/lrscroll.js"></script> -->
 	
 	<title>搜索引擎——网页</title> 
 <style type="text/css">  
 body {  
     margin: 0;  
-    background-image: url('bg.jpg') ; 
+    background-image: url('static/bg.jpg') ; 
 	background-size:100%;
     background-repeat:repeat;  
 }   
@@ -63,9 +62,10 @@ body {
 				<button><a href="/im">图片</a></button>
 				
 				<form action="/s" method="GET">
-					
+					$:form.render()
+<!-- 					
 						<input class="box" name="keyword" type="text" style="color: #000000" value="">
-						<input type="submit" class="bx" name="Search" value="搜索网页">
+						<input type="submit" class="bx" name="Search" value="搜索网页"> -->
 					
 				</form>
 				
@@ -73,8 +73,8 @@ body {
 		</div>
 	
 	</div>
-	<script src="js/classie.js"></script>
-	<script src="js/main.js"></script>
+	<script src="static/js/classie.js"></script>
+	<script src="static/js/main.js"></script>
 	<script>
 			var menuLeft = document.getElementById( 'cbp-spmenu-s1' ),
 				showLeft = document.getElementById( 'showLeft' ),
