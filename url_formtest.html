@@ -1,0 +1,107 @@
+$def with(form)
+<!DOCTYPE html>
+<html>
+	<head>
+
+	<meta charset="utf-8">
+
+	<link rel="shortcut icon" href="../favicon.ico"> 
+	<link rel="stylesheet" type="text/css" href="css/default.css" />
+	<link rel="stylesheet" type="text/css" href="css/component.css" />
+	<link rel="stylesheet" type="text/css" href="css/component1.css" />
+	<script src="js/modernizr.custom.js"></script>
+	<script src="js/modernizr-custom.js"></script>
+	<script type="text/javascript" src="js/lrscroll.js"></script>
+	
+	<title>搜索引擎——网页</title> 
+<style type="text/css">  
+body {  
+    margin: 0;  
+    background-image: url('bg.jpg') ; 
+	background-size:100%;
+    background-repeat:repeat;  
+}   
+</style>  
+
+
+
+</head>
+
+<body>
+	
+	<nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
+			<div class="menu__wrap">
+				<ul data-menu="main" class="menu__level" tabindex="-1" role="menu" aria-label="All">
+					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">&nbsp名称Name</a></li>
+					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">&nbsp品牌Brand</a></li>
+					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">&nbsp调香师Designer</a></li>
+					<li class="menu__item" role="menuitem"><a class="menu__link" data-submenu="submenu-4" aria-owns="submenu-4" href="#">&nbsp气味Scent</a></li>
+					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">&nbsp香调Notes</a></li>
+				</ul>
+				<!-- Submenu 1 -->
+				<ul data-menu="submenu-4" id="submenu-4" class="menu__level" tabindex="-1" role="menu" aria-label="Vegetables">
+					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">&nbsp前调Head Notes</a></li>
+					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">&nbsp中调Heart Notes</a></li>
+					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">&nbsp后调Base Notes</a></li>
+					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">&nbsp混合搜索Cross Search</a></li>				
+				</ul>
+			</div>
+			</nav>
+	<div class="container">
+		<header class="clearfix">
+			<span>香水</span>
+			<h1>搜索 &amp;引擎</h1>
+			<nav>
+				<a id="showLeft" class="icon-arrow-left" data-info="Menu">Show Menu</a>
+			</nav>
+		</header>
+		<div class="main" style="margin-top: 100px;">
+			<section>
+				<!-- Class "cbp-spmenu-open" gets applied to menu -->
+
+				<button><a class="active" href="/">网页</a></button>
+				<button><a href="/im">图片</a></button>
+				
+				<form action="/s" method="GET">
+					
+						<input class="box" name="keyword" type="text" style="color: #000000" value="">
+						<input type="submit" class="bx" name="Search" value="搜索网页">
+					
+				</form>
+				
+			</section>				
+		</div>
+	
+	</div>
+	<script src="js/classie.js"></script>
+	<script src="js/main.js"></script>
+	<script>
+			var menuLeft = document.getElementById( 'cbp-spmenu-s1' ),
+				showLeft = document.getElementById( 'showLeft' ),
+				body = document.body,
+				mlmenu = new MLMenu(menuLeft, {
+				// breadcrumbsCtrl : true, // show breadcrumbs
+				// initialBreadcrumb : 'all', // initial breadcrumb text
+				backCtrl : false, // show back button
+				// itemsDelayInterval : 60, // delay between each menu item sliding animation
+				//onItemClick: loadDummyData // callback: item that doesn´t have a submenu gets clicked - onItemClick([event], [inner HTML of the clicked item])
+			});
+
+			showLeft.onclick = function() {
+				classie.toggle( this, 'active' );
+				classie.toggle( menuLeft, 'cbp-spmenu-open' );
+				disableOther( 'showLeft' );
+			};
+
+			function disableOther( button ) {
+				if( button !== 'showLeft' ) {
+					classie.toggle( showLeft, 'disabled' );
+				}
+				if( button !== 'showRight' ) {
+					classie.toggle( showRight, 'disabled' );
+				}
+			}
+		</script>
+</body>
+
+</html>

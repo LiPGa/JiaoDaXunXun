@@ -1,0 +1,86 @@
+$def with (name,content,form,num)
+
+<!DOCTYPE html>
+<html>
+<head>
+
+<style type="text/css">
+<meta charset="utf-8">
+body{ text-align:center;
+	background-color:#B3D9D9} 
+div{
+opacity: 0.8}
+div:hover{opacity: 1}
+p{
+	background-color: #CF9E9E;
+	border-style: solid;
+	border-color: #888888;
+}
+
+ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #333;
+}
+li {
+    float: middle;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: #111;
+}
+</style>
+</head>
+
+<body>
+<title>搜索引擎——"$name"的网页搜索结果</title> 
+<ul>
+  <div style="float:left;width:50%">
+  <li><a href="/">网页</a></li>
+  </div>
+  <div style="float:left;width:50%">
+  <li><a class="active" href="/im">图片</a></li>
+  </div>
+</ul>
+
+<form action="/s" method="GET">
+    $:form.render()
+</form>
+
+$if name:
+    <!DOCTYPE html>
+	<html>
+	<head>
+	<meta charset="utf-8">
+	</head>
+	<body>
+		<h1>"$name"的网页搜索结果</h1>
+		<font color="#743A3A"><font size="3">为您找到相关结果约 $num 个</font></font><br />
+	$for res in content:
+
+		$if len(res)==3:
+			$if res[0]!='':
+				<div style="background-color:#336666 opacity: 0.6 ">
+				<p><a href=$res[1]><font size="5">$res[0]</a></font><br>
+				<br>
+				$:res[2]
+				<br>
+				<font color="#336666"><font size="3">$:res[1]</font></font><br>
+				</div>
+			
+		
+	</body>
+	</html>
+
+$else:
+    <em>抱歉</em>, 找不到相关结果

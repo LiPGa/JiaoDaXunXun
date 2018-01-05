@@ -1,0 +1,258 @@
+$def with(form)
+<!DOCTYPE html>
+<html>
+	<head>
+
+	<meta charset="utf-8">
+
+	<link rel="shortcut icon" href="../favicon.ico"> 
+	<link rel="stylesheet" type="text/css" href="css/default.css" />
+	<link rel="stylesheet" type="text/css" href="css/component.css" />
+	<link rel="stylesheet" type="text/css" href="css/component1.css" />
+	<link rel="stylesheet" type="text/css" href="css/rescomponent.css" />
+	<link rel="stylesheet" type="text/css" href="css/demo.css" />
+	<script src="js/modernizr.custom.js"></script>
+	<script src="js/modernizr-custom.js"></script>
+	<script type="text/javascript" src="js/lrscroll.js"></script>
+	
+	<title>搜索引擎——网页</title> 
+<style type="text/css">  
+body {  
+    margin: 0;  
+    background-image: url('bg.jpg') ; 
+	background-size:100%;
+    background-repeat:repeat;  
+}   
+</style>  
+
+
+
+</head>
+
+<body>
+	
+	<nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
+			<div class="menu__wrap">
+				<ul data-menu="main" class="menu__level" tabindex="-1" role="menu" aria-label="All">
+					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">&nbsp名称Name</a></li>
+					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">&nbsp品牌Brand</a></li>
+					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">&nbsp调香师Designer</a></li>
+					<li class="menu__item" role="menuitem"><a class="menu__link" data-submenu="submenu-4" aria-owns="submenu-4" href="#">&nbsp气味Scent</a></li>
+					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">&nbsp香调Notes</a></li>
+				</ul>
+				<!-- Submenu 1 -->
+				<ul data-menu="submenu-4" id="submenu-4" class="menu__level" tabindex="-1" role="menu" aria-label="Vegetables">
+					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">&nbsp前调Head Notes</a></li>
+					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">&nbsp中调Heart Notes</a></li>
+					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">&nbsp后调Base Notes</a></li>
+					<li class="menu__item" role="menuitem"><a class="menu__link" href="#">&nbsp混合搜索Cross Search</a></li>				
+				</ul>
+			</div>
+			</nav>
+	<div class="container">
+		<header class="clearfix">
+			<span>香水</span>
+			<h1>搜索结果</h1>
+			<nav>
+				<a id="showLeft" class="icon-arrow-left" data-info="Menu">Show Menu</a>
+			</nav>
+			<section style="margin-top: 50px;">
+				<!-- Class "cbp-spmenu-open" gets applied to menu -->
+
+				<button style="border: none;background:#2D2D2D;color: #fff;padding: 0.8em;display: inline-block;width: 8%;cursor: pointer;margin: -1.8px ;font-size: 0.8em;box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);"><a class="active" href="/">网页</a></button>
+				<button style="border: none;background:#2D2D2D;color: #fff;padding: 0.8em;display: inline-block;width: 8%;cursor: pointer;margin: -1.8px ;font-size: 0.8em;box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);"><a href="/im">图片</a></button>
+				
+				<form action="/s" method="GET">
+					
+						<input class="box" name="keyword" type="text" style="color: #000000;padding: 6px;display: inline-block;width: 300px;margin-top: 10px;" value="">
+						<input type="submit" class="bx" name="Search" style="margin-top: 0px;width: 10%;padding: 10px;" value="搜索">
+					
+				</form>
+				
+			</section>			
+		</header>
+		<div class="main" style="margin-top: 10px;">
+		<form action="/s" method="GET">
+  		  $:form.render()
+		</form>
+		$if name:
+			<h1>"$name"的搜索结果</h1>
+			<font color="#743A3A"><font size="3">为您找到相关结果约 $num 个</font></font><br />
+			<div id="grid-gallery" class="grid-gallery">
+				<section class="grid-wrap">
+					<ul class="grid">
+						<li class="grid-sizer"></li>
+							$for res in content:
+							<!--
+								<div style="float:left;width:20%;height:300px;background: #D24648;">
+									<p><a href=$res[0]><img src = $res[0] ><a href= $res[1]> $res[2] </a><br></p>		
+								</div>
+				-->
+								<li>
+							<figure>
+								<img src="1.jpg" alt="img01"/>
+								<figcaption><h3>Perfume 01</h3><p>价格：lllll</p></figcaption>
+							</figure>
+				</li>
+								<li>
+							<figure>
+								<img src="2.jpg" alt="img01"/>
+								<figcaption><h3>Perfume 02</h3><p>价格：lllll</p></figcaption>
+							</figure>
+				</li>
+								<li>
+							<figure>
+								<img src="3.jpg" alt="img01"/>
+								<figcaption><h3>Perfume 03</h3><p>价格：lllll</p></figcaption>
+							</figure>
+				</li>
+								<li>
+							<figure>
+								<img src="3.jpg" alt="img01"/>
+								<figcaption><h3>Perfume 04</h3><p>价格：lllll</p></figcaption>
+							</figure>
+				</li>
+								<li>
+							<figure>
+								<img src="3.jpg" alt="img01"/>
+								<figcaption><h3>Perfume 05</h3><p>价格：lllll</p></figcaption>
+							</figure>
+				</li>
+				<li>
+							<figure>
+								<img src="1.jpg" alt="img01"/>
+								<figcaption><h3>Perfume 01</h3><p>价格：lllll</p></figcaption>
+							</figure>
+				</li>
+								<li>
+							<figure>
+								<img src="2.jpg" alt="img01"/>
+								<figcaption><h3>Perfume 02</h3><p>价格：lllll</p></figcaption>
+							</figure>
+				</li>
+					</ul>
+				</section>	
+				<section class="slideshow">
+					<ul>
+						<li>
+							<figure>
+								<figcaption>
+									<h3>香水01</h3>
+									<p>品牌xxxxx香调xxxxx前调：wnejkfwnde中调：wqdhixqkj后调：dqhwjhdfqiw价格：nwojdnd 调香师：nsjke 购买链接：</p>
+								</figcaption>
+								<div align="center"><img src="1.jpg" alt="img01"/></div>
+								
+							</figure>
+						</li>
+						<li>
+							<figure>
+								<figcaption>
+									<h3>香水02 &#58;</h3>
+									<p>品牌xxxxx 香调xxxxx前调：wnejkfwnde中调：wqdhixqkj后调：dqhwjhdfqiw价格：nwojdnd 调香师：nsjke购买链接：</p>
+								</figcaption>
+								<div align="center"><img src="2.jpg" alt="img02"/></div>
+							</figure>
+						</li>
+						<li>
+							<figure>
+								<figcaption>
+									<h3>香水03</h3>
+									<p>品牌xxxxx香调xxxxx前调：wnejkfwnde中调：wqdhixqkj后调：dqhwjhdfqiw价格：nwojdnd 调香师：nsjke 购买链接：</p>
+								</figcaption>
+								<div align="center"><img src="3.jpg" alt="img03"/></div>
+							</figure>
+						</li>
+						<li>
+							<figure>
+								<figcaption>
+									<h3>香水04（名字）</h3>
+									<p>品牌xxxxx香调xxxxx前调：wnejkfwnde中调：wqdhixqkj后调：dqhwjhdfqiw价格：nwojdnd 调香师：nsjke 购买链接：</p>
+								</figcaption>
+								<div align="center"><img src="3.jpg" alt="img04"/></div>
+							</figure>
+						</li>
+						<li>
+							<figure>
+								<figcaption>
+									<h3>香水05</h3>
+									<p>品牌xxxxx香调xxxxx前调：wnejkfwnde中调：wqdhixqkj后调：dqhwjhdfqiw价格：nwojdnd购买链接：</p>
+								</figcaption>
+								<div align="center"><img src="3.jpg" alt="img05"/></div>
+							</figure>
+						</li>
+						<li>
+							<figure>
+								<figcaption>
+									<h3>香水01</h3>
+									<p>品牌xxxxx香调xxxxx前调：wnejkfwnde中调：wqdhixqkj后调：dqhwjhdfqiw价格：nwojdnd 调香师：nsjke 购买链接：</p>
+								</figcaption>
+								<div align="center"><img src="1.jpg" alt="img01"/></div>
+								
+							</figure>
+						</li>
+						<li>
+							<figure>
+								<figcaption>
+									<h3>香水02 &#58;</h3>
+									<p>品牌xxxxx 香调xxxxx前调：wnejkfwnde中调：wqdhixqkj后调：dqhwjhdfqiw价格：nwojdnd 调香师：nsjke购买链接：</p>
+								</figcaption>
+								<div align="center"><img src="2.jpg" alt="img02"/></div>
+							</figure>
+						</li>
+					</ul>
+					<nav>
+						<span class="icon nav-prev"></span>
+						<span class="icon nav-next"></span>
+						<span class="icon nav-close"></span>
+					</nav>
+
+				</section>
+			$else:
+    		<em>抱歉</em>, 找不到相关结果
+		
+
+					
+				
+
+			</div>
+		</div>
+	</div>
+	<script src="js/classie.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/imagesloaded.pkgd.min.js"></script>
+	<script src="js/masonry.pkgd.min.js"></script>
+	<script src="js/classie 2.js"></script>
+	<script src="js/cbpGridGallery.js"></script>
+	<script>
+			var menuLeft = document.getElementById( 'cbp-spmenu-s1' ),
+				showLeft = document.getElementById( 'showLeft' ),
+				body = document.body,
+				mlmenu = new MLMenu(menuLeft, {
+				// breadcrumbsCtrl : true, // show breadcrumbs
+				// initialBreadcrumb : 'all', // initial breadcrumb text
+				backCtrl : false, // show back button
+				// itemsDelayInterval : 60, // delay between each menu item sliding animation
+				//onItemClick: loadDummyData // callback: item that doesn´t have a submenu gets clicked - onItemClick([event], [inner HTML of the clicked item])
+			});
+
+			showLeft.onclick = function() {
+				classie.toggle( this, 'active' );
+				classie.toggle( menuLeft, 'cbp-spmenu-open' );
+				disableOther( 'showLeft' );
+			};
+
+			function disableOther( button ) {
+				if( button !== 'showLeft' ) {
+					classie.toggle( showLeft, 'disabled' );
+				}
+				if( button !== 'showRight' ) {
+					classie.toggle( showRight, 'disabled' );
+				}
+			}
+		</script>
+	<script>
+			new CBPGridGallery( document.getElementById( 'grid-gallery' ) );
+	</script>
+</body>
+
+</html>
