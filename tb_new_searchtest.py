@@ -13,11 +13,14 @@ from org.apache.lucene.queryparser.classic import QueryParser
 from org.apache.pylucene.search import PythonFieldComparator, PythonFieldComparatorSource
 from org.apache.lucene.store import SimpleFSDirectory
 from org.apache.lucene.search import IndexSearcher
+from org.apache.lucene.search import NumericRangeQuery
 from org.apache.lucene.util import Version
 from org.apache.lucene.search import Sort
 from org.apache.lucene.search import SortField
+from org.apache.lucene.queryparser.classic import QueryParserBase
+from org.apache.lucene.queryparser.classic import MultiFieldQueryParser
+from org.apache.lucene.search import BooleanClause
 from lupyne import engine
-
 reload(sys)  # Reload does the trick!
 sys.setdefaultencoding('UTF8')
 """
@@ -35,91 +38,158 @@ def run(searcher, analyzer):
     def perfume_search(command):
         query = QueryParser(Version.LUCENE_CURRENT, "name",
                             analyzer).parse(command)
-        scoreDocs = searcher.search(query, 20).scoreDocs
-        print "%s total matching documents." % len(scoreDocs)
+        return query
 
+    def name_price_search(name,low,high):
+        query = QueryParser(Version.LUCENE_CURRENT, "name",
+                            analyzer).parse(command)
+        scoreDocs = searcher.search(query, 5000 , Sort([SortField.FIELD_SCORE,SortField("price", SortField.Type.DOUBLE,False)])).scoreDocs
         for scoreDoc in scoreDocs:
             doc = searcher.doc(scoreDoc.doc)
-            print "-"*100
-                            #             doc.add(Field("name", name,t3))        
-                            # doc.add(Field("url", url,t2))        
-                            # doc.add(Field("price", price,t2))
-                            # doc.add(Field("post",post,t2))        
-                            # doc.add(Field("sales",sales,t2))        
-                            # doc.add(Field("comments",comments,t2))        
-                            # doc.add(Field("place",place,t2))        
-                            # doc.add(Field("shop",shop,t2))        
-                            # doc.add(Field("img",img, t2))
-            print 'perfume:',doc.get('name')
-            if doc.get('name')==command:
-              print '100% MATCH!'
-            print 'xssd name:',doc.get('xssd_name')
+            if float(doc.get('price')) >=low and float(doc.get('price'))<high:
+                print '-'*100   
+                print 'name:',doc.get('name')
+                print doc.get('rate')+'分('+doc.get('comments')+'人评价)'
+                if doc.get('post')==0:
+                    print '¥'+doc.get('price')+'\t'+'包邮'
+                else:
+                    print '¥'+doc.get('price')
+                print doc.get('sales'),'人付款'
+                if doc.get('perfumer')!=None:
+                    print '调香师:',doc.get('perfumer')
+                if doc.get('tune')!=None:
+                    print 'tune:',doc.get('tune')
+                if doc.get('scents')=='':continue;
+                if doc.get('former')!=None:
+                    print 'former:',doc.get('former')
+                    print 'mid:',doc.get('mid')
+                    print 'last:',doc.get('last')
+                else:
+                    print 'scents:',doc.get('scents')
+
+
+    def cross_search(former,mid,last):
+        query=''.join(former)+' '+''.join(mid)+' '+''.join(last)
+        fields = ["former", "mid","last"]
+        clauses = [ BooleanClause.Occur.SHOULD, BooleanClause.Occur.SHOULD,BooleanClause.Occur.SHOULD]
+        parser = MultiFieldQueryParser(Version.LUCENE_CURRENT, fields, analyzer)
+        parser.setDefaultOperator(QueryParserBase.AND_OPERATOR)
+        query = MultiFieldQueryParser.parse(parser, query)
+        return query
+
+    def perfumer_search(command):
+         query = QueryParser(Version.LUCENE_CURRENT, "perfumer",analyzer).parse(command)
+         scoreDocs = searcher.search(query, 100).scoreDocs
+         print len(scoreDocs)
+         perfumer_list=[]
+          # , Sort([SortField.FIELD_SCORE,SortField("rate", SortField.Type.INT,True)])).scoreDocs
+         for scoreDoc in scoreDocs:
+            doc = searcher.doc(scoreDoc.doc)
+            if doc.get('perfumer') not in perfumer_list:
+                perfumer_list.append(perfumer)
+         for scoreDoc in scoreDocs:
+            doc = searcher.doc(scoreDoc.doc)
+            print '-'*100   
+            print '调香师:',doc.get('perfumer')
+            print 'name:',doc.get('xssd_name')
+            print doc.get('rate')+'分('+doc.get('xssd_comments')+'人评价)'
+            print doc.get('sales'),'人付款'
+
+            if doc.get('tune')!=None:
+                print 'tune:',doc.get('tune')
             if doc.get('former')!=None:
                 print 'former:',doc.get('former')
                 print 'mid:',doc.get('mid')
                 print 'last:',doc.get('last')
             else:
-                print 'scents:',doc.get('scents')
-            print 'tune:',doc.get('tune')
-            print 'brand:',doc.get('brand')
+                print 'scents:',doc.get('scents') 
+            print '购买链接:',doc.get('url')
+            print '香水时代图片:',doc.get('xssd_url')          
 
-    def price_sort(command):
-        query = QueryParser(Version.LUCENE_CURRENT, "name",
-                            analyzer).parse(command)
-        scoreDocs = searcher.search(query, 8).scoreDocs
-        print "%s total matching documents." % len(scoreDocs)
-        indexer = engine.Indexer()
-        l='name','price','comments','sales','url','img','place','shop'
-        for i in l:
-            indexer.set(i,stored=True, tokenized=False)
-        for scoreDoc in scoreDocs:
-            doc = searcher.doc(scoreDoc.doc)          
-            indexer.add(name=doc.get('name'),price=doc.get('price'),comments=doc.get('comments'),sales=doc.get('sales'),url=doc.get('url'),img=doc.get('img'),shop=doc.get('shop'),place=doc.get('place'))
-            # print doc.get('name')
-        indexer.commit()
-        hits = indexer.search(sort='price')
-        for hit in hits:
-            print '------------------------------------------------------------------------------------------------------------'
-            print 'Perfume:',hit['name']
-            print 'Price:',hit['price']
-            print 'img:',hit['img']
-            print 'Sales:',hit['sales']
-            print 'comments:',hit['comments']
-            print 'Shop:',hit['shop']
-            print 'Place:',hit['place']
-    def sales_sort(command):
-        query = QueryParser(Version.LUCENE_CURRENT, "name",
-                            analyzer).parse(command)
-        scoreDocs = searcher.search(query, 8).scoreDocs
-        # sorter = search.Sort(search.SortField('price', search.SortField.Type.STRING))
-        # topdocs = searcher.search(query, None, 10, sorter)
-        # print "%s total matching documents." % len(topdocs.scoreDocs)
-        # for scoredoc in topdocs.scoreDocs:
-        #     doc = searcher.doc(scoredoc.doc)
-        print "%s total matching documents." % len(scoreDocs)
-        indexer = engine.Indexer()
-        l='name','price','comments','sales','url','img','place','shop'
-        for i in l:
-            indexer.set(i,stored=True, tokenized=False)
-        for scoreDoc in scoreDocs:
-            doc = searcher.doc(scoreDoc.doc)          
-            indexer.add(name=doc.get('name'),price=doc.get('price'),comments=doc.get('comments'),sales=doc.get('sales'),url=doc.get('url'),img=doc.get('img'),shop=doc.get('shop'),place=doc.get('place'))
-            # print doc.get('sales')
-        indexer.commit()
-        hits = list(indexer.search(sort='sales'))[::-1]
-        for hit in hits:
-            print '------------------------------------------------------------------------------------------------------------'
-            print 'Perfume:',hit['name']
-            print 'Price:',hit['price']
-            print 'Sales:',hit['sales']
-            print 'img:',hit['img']
-            print 'comments:',hit['comments']
-            print 'Shop:',hit['shop']
-            print 'Place:',hit['place']
+    def former_search(former):
+        query = QueryParser(Version.LUCENE_CURRENT, "former",analyzer).parse(command)
+        return query
+    def mid_search(mid):
+        query = QueryParser(Version.LUCENE_CURRENT, "mid",analyzer).parse(command)
+        return query
+    def last_search(last):
+        query = QueryParser(Version.LUCENE_CURRENT, "last",analyzer).parse(command)
+        return query
+    def brand_scent_search(brand,scent):
+        query=brand+' '+''.join(scents)
+        fields = ["xssd_name", "scents"]
+        clauses = [ BooleanClause.Occur.SHOULD, BooleanClause.Occur.SHOULD,BooleanClause.Occur.SHOULD]
+        parser = MultiFieldQueryParser(Version.LUCENE_CURRENT, fields, analyzer)
+        parser.setDefaultOperator(QueryParserBase.AND_OPERATOR)
+        query = MultiFieldQueryParser.parse(parser, query)      
+        return query     
 
-    command="爱马仕大地"
-    perfume_search(command)
 
+    def standard_sort(query):
+        scoreDocs=searcher.search(query,8).scoreDocs
+        return scoreDocs
+
+    def rate_sort(query):
+        scoreDocs = searcher.search(query, 8 , Sort([SortField.FIELD_SCORE,SortField("rate", SortField.Type.DOUBLE,True)])).scoreDocs
+        return scoreDocs
+        
+
+    def price_sort(query):
+        scoreDocs = searcher.search(query, 8 , Sort([SortField.FIELD_SCORE,SortField("price", SortField.Type.DOUBLE,False)])).scoreDocs
+        return scoreDocs
+
+    def sales_sort(query):
+        scoreDocs = searcher.search(query, 8 , Sort([SortField.FIELD_SCORE,SortField("sales", SortField.Type.INT,True),
+                                     SortField("price", SortField.Type.DOUBLE,False)])).scoreDocs
+        return scoreDocs
+
+    brand='爱马仕'
+    name='【直营】HERMES 爱马仕 大地男士淡香水男士香水'
+    scents=['水仙花','香根草']
+    command="绿邂逅"
+    former=['醋栗叶','黑加仑花']
+    mid=['水仙花']
+    last=['香根草']
+    low=0
+    high=200
+    perfumer='Claude'
+
+    # query=cross_search(former,mid,last)
+    # query=brand_scent_search(brand,scents)
+    # query=perfume_search(name)
+    # query=perfumer_search(command)
+    # scoreDocs=sales_sort(query)
+    # scoreDocs=price_sort(query)
+    # scoreDocs=standard_sort(query)
+
+    perfumer_search(perfumer)
+    # name_price_search(name,low,high)
+    # print "%s total matching documents." % len(scoreDocs)
+    # for scoreDoc in scoreDocs:
+    #     doc = searcher.doc(scoreDoc.doc)
+    #     print '-'*100   
+    #     print 'name:',doc.get('name')
+    #     if doc.get('perfumer')!=None:
+    #         print '调香师:',doc.get('perfumer')
+    #     print  '香水时代名字:',doc.get('xssd_name')
+    #     print doc.get('rate')+'分('+doc.get('comments')+'人评价)'
+    #     if doc.get('post')==0:
+    #         print '¥'+doc.get('price')+'\t'+'包邮'
+    #     else:
+    #         print '¥'+doc.get('price')
+    #     print doc.get('sales'),'人付款'
+    #     print '淘宝链接:',doc.get('url')
+    #     print '图片:',doc.get('img')
+    #     print '香水时代图片:',doc.get('xssd_url')
+
+    #     if doc.get('tune')!=None:
+    #         print 'tune:',doc.get('tune')
+    #     if doc.get('former')!=None:
+    #         print 'former:',doc.get('former')
+    #         print 'mid:',doc.get('mid')
+    #         print 'last:',doc.get('last')
+    #     else:
+    #         print 'scents:',doc.get('scents')
 
 if __name__ == '__main__':
     STORE_DIR = "index_tb_new"
