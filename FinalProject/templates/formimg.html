@@ -1,0 +1,128 @@
+$def with(form)
+
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+
+	<link rel="shortcut icon" href="../favicon.ico"> 
+	<link rel="stylesheet" type="text/css" href="/static/css/default.css" />
+	<link rel="stylesheet" type="text/css" href="/static/css/component.css" />
+	<link rel="stylesheet" type="text/css" href="/static/css/component1.css" />
+	<script src="/static/js/modernizr.custom.js"></script>
+	<script src="/static/js/modernizr-custom.js"></script>
+	<script type="text/javascript" src="static/js/lrscroll.js"></script>
+	<style type="text/css">
+		body {  
+    		margin: 0;  
+    		background-image: url('static/bg2.jpg') ; 
+			background-size:100%;
+   			background-repeat:repeat;  
+			}   
+
+	</style>
+	<title>搜索引擎——图片</title> 
+	<script type="text/javascript">
+    function imgPreview(fileDom){
+        //判断是否支持FileReader
+        if (window.FileReader) {
+            var reader = new FileReader();
+        } else {
+            alert("您的设备不支持图片预览功能，如需该功能请升级您的设备");
+        }
+
+        //获取文件
+        var file = fileDom.files[0];
+        var imageType = /^image\//;
+        //是否是图片
+        if (!imageType.test(file.type)) {
+            alert("请选择图片格式文件");
+            return;
+        }
+        //读取完成
+        reader.onload = function(e) {
+            //获取图片dom
+            var img = document.getElementById("preview");
+            //图片路径设置为读取的图片
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+		
+</script>
+</head>
+<body>
+	<nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
+			<h3>菜单Menu</h3>
+			<a href="/formbr"">品牌Brand</a>
+			<a href="/formde">调香师Designer</a>
+			<a href="/formfo">前调Head Notes</a>
+			<a href="/formmi">中调Heart Notes</a>
+			<a href="/formla">后调Base Notes</a>
+			<a href="/formsc">气味Scent</a>
+			<a href="/formnote">香调Notes</a>
+			<a href="/c">交叉搜索Cross Search</a>
+			<a href="/bs">品牌&气味</a>
+
+	</nav>
+
+
+
+
+	
+	<div class="container">
+		<header class="clearfix">
+			<span>le parfum</span>
+			<span>一个超级厉害的香水搜索小站</span>
+			<nav>
+				<a id="showLeft" class="icon-arrow-left" data-info="Menu">Show Menu</a>
+			</nav>
+		</header>
+		<div class="main" style="margin-top: 100px;">
+			<section>
+				<!-- Class "cbp-spmenu-open" gets applied to menu -->
+				<a href="/">网页</a>
+				<a class="active" href="/i">图片</a>
+				<form action='/im' method="POST" enctype="multipart/form-data" action="" style="display: inline-block;">
+					<input type="file" name="myfile" style="color:#000000;border: thick;width: 1000px;font-size: 16;background-color:#343434;opacity: 0.5;padding: 12px;display: inline-block;" onchange="imgPreview(this)" />
+					
+					<input type="submit" class="bx" value="搜索图片" style="margin-left: 0px;display: inline-block;"/>
+					<img style="max-width: 100%;max-height: 400px;margin: 10px;margin-left: -3px;" id="preview" />
+				</form>
+				
+				
+				
+			</section>				
+		</div>
+	
+	</div>
+	<script src="/static/js/classie.js"></script>
+	<script src="/static/js/main.js"></script>
+	<script>
+			var menuLeft = document.getElementById( 'cbp-spmenu-s1' ),
+			showLeft = document.getElementById( 'showLeft' ),
+			body = document.body;
+
+			showLeft.onclick = function() {
+				classie.toggle( this, 'active' );
+				classie.toggle( menuLeft, 'cbp-spmenu-open' );
+				disableOther( 'showLeft' );
+			};
+
+			function disableOther( button ) {
+				if( button !== 'showLeft' ) {
+					classie.toggle( showLeft, 'disabled' );
+				}
+				
+			
+
+			}
+		</script>
+	<script>
+			new CBPGridGallery( document.getElementById( 'grid-gallery' ) );
+	</script>
+</body>
+
+
+</html>
