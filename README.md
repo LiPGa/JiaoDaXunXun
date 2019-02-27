@@ -1,5 +1,3 @@
-# 大作业实验报告
-
 ## 项目描述
 
 这是一个资料齐全的香水搜索网站。用户通过输入自己所期待的香水的各类信息，检索到期望的香水，并通过网站的购买链接直接购买。
@@ -26,49 +24,59 @@
      1. 菜单栏
      菜单栏的设计主要是为了实现页面之前的切换。通过页面右上角的button实现菜单栏的弹出和隐藏，具体方式是将菜单的初始位置设为负数，即在页面左侧之外；单击菜单按钮使菜单向右移动至合适位置出现，通过js函数（classie.js）使弹出收回过程平滑。菜单栏本体为标签为nav的框架，具体格式设计在component.css文件中实现。
      2. 首页设计
-        - 文字搜索
-          文字搜索页面采用统一的格式：标题栏/按钮/搜索框，其中搜索框按照搜索的不同功能区别，如文字单一特征搜索仅一文字输入框，交叉搜索多项输入。关键词由input传入搜索系统，再将结果以列表的形式传入结果页面。
-                  user_data = web.input()
-                  a = func(user_data.keyword)
-        - 图片搜索
-          图片搜索的输入框为文件导入，通过JavaScript函数实现了图片预览功能：
-              function imgPreview(fileDom){
-                      //判断是否支持FileReader
-                      if (window.FileReader) {
-                          var reader = new FileReader();
-                      } else {
-                          alert("您的设备不支持图片预览功能，如需该功能请升级您的设备");
-                      }
-                      //获取文件
-                      var file = fileDom.files[0];
-                      var imageType = /^image\//;
-                      //是否是图片
-                      if (!imageType.test(file.type)) {
-                          alert("请选择图片格式文件");
-                          return;
-                      }
-                      //读取完成
-                      reader.onload = function(e) {
-                          //获取图片dom
-                          var img = document.getElementById("preview");
-                          //图片路径设置为读取的图片
-                          img.src = e.target.result;
-                      };
-                      reader.readAsDataURL(file);
-                  }
-          另外通过函数upload（code.py 47）将图片保存至本地，以进行图片搜索数据的读取。
+  - 文字搜索
+    文字搜索页面采用统一的格式：标题栏/按钮/搜索框，其中搜索框按照搜索的不同功能区别，如文字单一特征搜索仅一文字输入框，交叉搜索多项输入。关键词由input传入搜索系统，再将结果以列表的形式传入结果页面。
+    ```
+      user_data = web.input()
+      a = func(user_data.keyword)
+    ```
+    
+  - 图片搜索
+    图片搜索的输入框为文件导入，通过JavaScript函数实现了图片预览功能：
+    ```
+        function imgPreview(fileDom){
+                //判断是否支持FileReader
+                if (window.FileReader) {
+                    var reader = new FileReader();
+                } else {
+                    alert("您的设备不支持图片预览功能，如需该功能请升级您的设备");
+                }
+                //获取文件
+                var file = fileDom.files[0];
+                var imageType = /^image\//;
+                //是否是图片
+                if (!imageType.test(file.type)) {
+                    alert("请选择图片格式文件");
+                    return;
+                }
+                //读取完成
+                reader.onload = function(e) {
+                    //获取图片dom
+                    var img = document.getElementById("preview");
+                    //图片路径设置为读取的图片
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+    ```
+    
+    另外通过函数`upload（code.py 47）`将图片保存至本地，以进行图片搜索数据的读取。
      3. 搜索结果展示
-        搜索结果通过$def with(form)的形式传入html文件中，由于每个结果商品特征过多不方便在页面同时展示，我们仅在结果页面展示相关关键特征（如商品名字和价格等），再设计详细展示模块，展示具体信息并提供商品链接。格式设置主要是通过标签的class信息在css文件中具体控制，结果格式设计见rescomponent.css
-        - 结果排列
-          商品采用小图+标题的形式展示，控制商品宽度一致，高度按原图比例实现每行四个block叠加排列。
-        - 详细信息
-          为实现用户打开结果展示，结果展示默认属性hidden，当商品状态转化为active后出现；通过div标签划分左右文字/图片区域，文字部分提供名称/品牌/香调/气味/购买链接等具体信息，图片部分展示完整大图，控制max-width，max-height，align="center"使其居中至适宜尺寸，另加入结果切换效果，详细见cbpGridGallery.js
-              .slideshow nav span.nav-prev,
-              .slideshow nav span.nav-next {
-              	top: 50%;
-              	-webkit-transform: translateY(-50%);
-              	transform: translateY(-50%);
-              }
+        搜索结果通过`$def with(form)`的形式传入html文件中，由于每个结果商品特征过多不方便在页面同时展示，我们仅在结果页面展示相关关键特征（如商品名字和价格等），再设计详细展示模块，展示具体信息并提供商品链接。格式设置主要是通过标签的class信息在css文件中具体控制，结果格式设计见`rescomponent.css`
+     - 结果排列
+       商品采用小图+标题的形式展示，控制商品宽度一致，高度按原图比例实现每行四个block叠加排列。
+       
+     - 详细信息
+       为实现用户打开结果展示，结果展示默认属性hidden，当商品状态转化为active后出现；通过div标签划分左右文字/图片区域，文字部分提供名称/品牌/香调/气味/购买链接等具体信息，图片部分展示完整大图，控制max-width，max-height，align="center"使其居中至适宜尺寸，另加入结果切换效果，详细见`cbpGridGallery.js`
+       ```
+           .slideshow nav span.nav-prev,
+           .slideshow nav span.nav-next {
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+           }
+       ```
+       
      4. 其他
         除以上内容外我们还具体加入了背景图片，字体，指针悬浮/选中效果等，尽可能优化用户体验。
    
@@ -81,6 +89,7 @@
    - 实现方法：
      - 淘宝网站有较强反爬虫策略，又加上我们并不需要大量不同品类商品的信息，因此我设计了一个模仿用户行为的爬虫，简单的来说就是爬取关键词搜索后得到的网站中的商品信息。
        1.设置headers
+       ```
            def url_open(url):
                headers=("user-agent","Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.22 Safari/537.36 SE 2.X MetaSr 1.0")
                opener=urllib2.build_opener()
@@ -89,10 +98,15 @@
                response=urllib2.Request(url)
                data=urllib2.urlopen(response).read().decode("utf-8","ignore")
                return data
+       ```
+       
        2.通过keyword进行检索
+       ```
            keywords=urllib.quote(keywd)
            url="https://s.taobao.com/search?q="+keywords+"&imgfile=&commend=all&ssid=s5-e&search_type=item&sourceId=tb.index&spm=a21bo.50862.201856-taobao-item.1&ie=utf8&bcoffset=4&ntoffset=4&p4ppushleft=1%2C48&s="+str(i*44)
-       3.通过分析淘宝的API.CustomizedApi类，定义各个字段正则匹配规则
+       ```
+       
+       3.通过分析淘宝的`API.CustomizedApi`类，定义各个字段正则匹配规则
        	由于淘宝网显示的html代码都经过加密等处理，直接用其爬取是无法得到任何信息的，所以只能分析json的列表信息。很容易就可以知道商品Url的匹配时detail_url等等，按照类似规则就可以进行正则匹配。
        
      - 香水时代等网站的结构较为简单，可以直接通过BeautifulSoup进行爬取。
@@ -121,7 +135,7 @@
          - MultiFieldQueryParser - 对单个表的索引进行多字段同时搜索
          - 另外，此处在搜索时用列表来存储目标输入，使得用户可以自由地输入前中后调（可以为空，也可以单个香调的多重输入），增强了搜索的鲁棒性。
          
-         ```python
+         ```
              fields = ["brand", "scents"]
              clauses=[BooleanClause.Occur.SHOULD,BooleanClause.Occur.SHOULD,BooleanClause.Occur.SHOULD]
              parser = MultiFieldQueryParser(Version.LUCENE_CURRENT, fields, analyzer)
@@ -129,27 +143,34 @@
              query = MultiFieldQueryParser.parse(parser, query)     
          ```
          
-      3. 结果处理
+3. 结果处理
       在SortField里面有很多静态常量来提供给排序器作为排序的依据：
-   1.       SortField里的属性    	    Sort里的属性    	      含义      
-         SortField.FIELD_DOC 	Sort.INDEXORDER 	 按照索引的顺序进行排序  
-        SortField.FIELD_SCORE	 Sort.RELEVANCE 	 按照关联性评分进行排序  
-         SortField.Type.INT  	 Sort.Type.INT  	 按照int型的字段排序  
-        SortField.Type.DOUBLE	Sort.Type.DOUBLE	按照double型的字段排序
-      	- 综合排序：使用按各个字段设定的权重boost对结果排序
-      	- 价格区间：使用numeric range query对价格关键词进行筛选
-      	- 由于对于pylucene各种接口的调用网上更多的是c++调用方法，没有官方和详细的教程与示例代码，即使找到也是对应不同lucene版本的，最后我通过在github上找到pylucene apache java源码，以及参考stackoverflow上的问题尝试出了正确调用方法，实现了预期效果。
-      - 效果：实现了价格升序、销量降序、评分降序、综合排序和价格区间筛选的功能，优化了用户的搜索体验。
-      一些题外话：在网上查阅资料的时候发现有个lupyne的库，它的介绍如下：
+      
+   | SortField里的属性 | Sort里的属性 | 含义  |
+   | ------ | ------ | ------ |
+   | SortField.FIELD_DOC 	| Sort.INDEXORDER  |	 按照索引的顺序进行排序  |
+   | SortField.FIELD_SCORE |	 Sort.RELEVANCE  |	 按照关联性评分进行排序 | 
+   | SortField.Type.INT  |	 Sort.Type.INT  |	 按照int型的字段排序  |
+   | SortField.Type.DOUBLE	| Sort.Type.DOUBLE	| 按照double型的字段排序 |
+   
+   - 综合排序：使用按各个字段设定的权重boost对结果排序
+   - 价格区间：使用numeric range query对价格关键词进行筛选
+   - 由于对于pylucene各种接口的调用网上更多的是c++调用方法，没有官方和详细的教程与示例代码，即使找到也是对应不同lucene版本的，最后我通过在github上找到pylucene apache java源码，以及参考stackoverflow上的问题尝试出了正确调用方法，实现了预期效果。
+   - 效果：实现了价格升序、销量降序、评分降序、综合排序和价格区间筛选的功能，优化了用户的搜索体验。
+   
+ 4. 一些题外话：在网上查阅资料的时候发现有个lupyne的库，它的介绍如下：
       > Lupyne first provides a unified search interface.The search method allows lucene Sort parameters to be passed through, since that's still optimal.Additionally the hits themselves can be sorted afterwards with any python callable key.The IndexSearcher.comparator method is convenient for creating a sort key table from indexed fields.The upshot is custom sorting and sorting large results are both easier and faster.
       
       因为lucene虽然有它的优点，但不足仍然不可忽视，比如：必须设置最大结果显示数，如果过大会由于它是预先分配，再排序，而造成结果不准确；比较算法中调用VM的时间复杂度是O(nlogn)，比scoredocs的迭代要复杂得多。最后我安装了lupyne库，并尝试使用它搜索和排序：
-          ```python
+      
+          ```
           hits = indexer.search(sort='price')
           comparator = indexer.comparator('price')	#建立关于价格排序的比较器
           hits = indexer.search().sorted(comparator.__getitem__)	#根据该比较器进行排序
           ```
+          
       效果很不错，但是由于与已经建立的index商品索引很难对接，没有继续使用下去这个方法。如果后续有时间，会继续对其进行研究和应用。
+      
 ### 图像搜索
    - 实现方法：
      1. 图片整体特征提取
@@ -162,7 +183,7 @@
      这个算法是由Ethan Rublee, Vincent Rabaud, Kurt Konolige以及Gary R.Bradski在2011年一篇名为“ORB：An Efficient Alternative to SIFTor SURF”的文章中提出。ORB算法分为两部分，分别是特征点提取和特征点描述。
      特征提取是由FAST（Features from  Accelerated Segment Test）算法发展来的，特征点描述是根据BRIEF（Binary Robust IndependentElementary Features）特征描述算法改进的。
      ORB特征是将FAST特征点的检测方法与BRIEF特征描述子结合起来，并在它们原来的基础上做了改进与优化。ORB算法的速度是sift的100倍，是surf的10倍。
-   1. 差异哈希是速度较快的哈希映射
+      2. 差异哈希是速度较快的哈希映射
       由于通过异或来进行匹配，因此在速度上有着非常好的提升，但是这个哈希可能太过严格，因此在尺度不一致的情况下，搜索的结果不甚理想，可以进一步的优化。
 
 ## 有待改进之处和未来展望
