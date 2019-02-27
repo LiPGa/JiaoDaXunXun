@@ -1,20 +1,18 @@
 大作业实验报告
 
- Table of Contents 大作业实验报告项目描述项目目的任务分工项目实现有待改进之处和未来展望其他
-
-项目描述
+# 项目描述
 
 这是一个资料齐全的香水搜索网站。用户通过输入自己所期待的香水的各类信息，检索到期望的香水，并通过网站的购买链接直接购买。
 
 ---
 
-项目目的
+# 项目目的
 
 市面上的香水搜索引擎都是与购买相分离的，香水购物网站并没有提供较详细的商品信息，比如：关心的前中后调、调香师、香调等元素都未被容纳在购物网站，市面上并没有专门的香水购物网站，给大家的购买带来了许多麻烦。因此我们打算设计开发出一个资料齐全、且能满足用户个性化的购买需求的香水搜索小站。
 
 ---
 
-任务分工
+# 任务分工
 
 - 顾钰仪：爬虫、图片搜索
 - 李聆嘉：文字搜索、整合
@@ -23,14 +21,14 @@
 
 ---
 
-项目实现
+# 项目实现
 
 1. 界面(含整合)
    - 页面构架：
      网页的结构和中期整合时提供的思路一致，渲染模版html文件，其中包括搜索主页与搜索结果展示页面。为不同搜索功能的实现制作多个搜索主页，结果展示基本不作区分。使用页面主要实现了菜单栏的设计，网页间的转换以及结果的排列展示，详细资料。展示网页的设计主要采用了css的格式和JavaScript添加动态效果。
    - 实现方法
      1. 菜单栏
-        菜单栏的设计主要是为了实现页面之前的切换。通过页面右上角的button实现菜单栏的弹出和隐藏，具体方式是将菜单的初始位置设为负数，即在页面左侧之外；单击菜单按钮使菜单向右移动至合适位置出现，通过js函数（classie.js）使弹出收回过程平滑。菜单栏本体为标签为nav的框架，具体格式设计在component.css文件中实现。
+     菜单栏的设计主要是为了实现页面之前的切换。通过页面右上角的button实现菜单栏的弹出和隐藏，具体方式是将菜单的初始位置设为负数，即在页面左侧之外；单击菜单按钮使菜单向右移动至合适位置出现，通过js函数（classie.js）使弹出收回过程平滑。菜单栏本体为标签为nav的框架，具体格式设计在component.css文件中实现。
      2. 首页设计
         - 文字搜索
           文字搜索页面采用统一的格式：标题栏/按钮/搜索框，其中搜索框按照搜索的不同功能区别，如文字单一特征搜索仅一文字输入框，交叉搜索多项输入。关键词由input传入搜索系统，再将结果以列表的形式传入结果页面。
@@ -77,11 +75,6 @@
               }
      4. 其他
         除以上内容外我们还具体加入了背景图片，字体，指针悬浮/选中效果等，尽可能优化用户体验。
-   *效果展示：
-   
-   					 
-   
-   
    
    
    
@@ -147,7 +140,7 @@
       	- 由于对于pylucene各种接口的调用网上更多的是c++调用方法，没有官方和详细的教程与示例代码，即使找到也是对应不同lucene版本的，最后我通过在github上找到pylucene apache java源码，以及参考stackoverflow上的问题尝试出了正确调用方法，实现了预期效果。
       - 效果：实现了价格升序、销量降序、评分降序、综合排序和价格区间筛选的功能，优化了用户的搜索体验。
       一些题外话：在网上查阅资料的时候发现有个lupyne的库，它的介绍如下：
-      Lupyne first provides a unified search interface.The search method allows lucene Sort parameters to be passed through, since that's still optimal.Additionally the hits themselves can be sorted afterwards with any python callable key.The IndexSearcher.comparator method is convenient for creating a sort key table from indexed fields.The upshot is custom sorting and sorting large results are both easier and faster.
+      > Lupyne first provides a unified search interface.The search method allows lucene Sort parameters to be passed through, since that's still optimal.Additionally the hits themselves can be sorted afterwards with any python callable key.The IndexSearcher.comparator method is convenient for creating a sort key table from indexed fields.The upshot is custom sorting and sorting large results are both easier and faster.
       因为lucene虽然有它的优点，但不足仍然不可忽视，比如：必须设置最大结果显示数，如果过大会由于它是预先分配，再排序，而造成结果不准确；比较算法中调用VM的时间复杂度是O(nlogn)，比scoredocs的迭代要复杂得多。最后我安装了lupyne库，并尝试使用它搜索和排序：
           hits = indexer.search(sort='price')
           comparator = indexer.comparator('price')	#建立关于价格排序的比较器
@@ -170,7 +163,7 @@
 
 ---
 
-有待改进之处和未来展望
+# 有待改进之处和未来展望
 
 - 哈希算法可以更进一步优化（加上图片整体特征，而不是仅仅使用颜色特征）以进一步提升图片搜索准确性。
 - 增加根据用户的搜索历史提供个性化推荐的功能。
@@ -180,6 +173,6 @@
 
 ---
 
-其他
+# 其他
 
-项目的github主页：点此进入
+项目的github主页：[点此进入](https://github.com/LiPGa/JiaoDaXunXun)
