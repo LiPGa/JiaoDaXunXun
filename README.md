@@ -19,7 +19,7 @@
 
 ## 项目实现
 
-1. 界面(含整合)
+### 界面(含整合)
    - 页面构架：
      网页的结构和中期整合时提供的思路一致，渲染模版html文件，其中包括搜索主页与搜索结果展示页面。为不同搜索功能的实现制作多个搜索主页，结果展示基本不作区分。使用页面主要实现了菜单栏的设计，网页间的转换以及结果的排列展示，详细资料。展示网页的设计主要采用了css的格式和JavaScript添加动态效果。
    - 实现方法
@@ -74,7 +74,7 @@
    
    
    
-   1. 爬虫
+### 爬虫
    - 目标网站：
      	由于我们小组做的是香水品类搜索引擎，因此也就不需要大范围无差爬虫，可以将目标简单的定为商品内容和商品详细资料两部分进行爬取。
      	商品内容部分我们主要以淘宝网作为目标网站，而商品详细资料的来源较为广泛，但是主要的参考网站还是香水时代网站。
@@ -102,7 +102,8 @@
      	scent.txt:提供商品的气味、香调归属、香水时代评分、评价数、图片URL(1.62MB)
      	perfumer.txt:提供调香师名字及调香师香水作品名字、图片URL、香水前中后调(3.01MB)
      	materials文件:提供香水时代中的所有香水图片(127.9MB)
-   1. 文字搜索
+### 文字搜索
+
       1. 建立索引
          索引关键词信息的来源：原始爬虫资料+处理后的爬虫资料（分组整理）
          问题难点：
@@ -119,11 +120,15 @@
          - BooleanClause - 用于表示布尔查询子句关系的类
          - MultiFieldQueryParser - 对单个表的索引进行多字段同时搜索
          - 另外，此处在搜索时用列表来存储目标输入，使得用户可以自由地输入前中后调（可以为空，也可以单个香调的多重输入），增强了搜索的鲁棒性。
+         
+         ```pyhton
              fields = ["brand", "scents"]
              clauses=[BooleanClause.Occur.SHOULD,BooleanClause.Occur.SHOULD,BooleanClause.Occur.SHOULD]
              parser = MultiFieldQueryParser(Version.LUCENE_CURRENT, fields, analyzer)
              parser.setDefaultOperator(QueryParserBase.AND_OPERATOR)
              query = MultiFieldQueryParser.parse(parser, query)     
+         ```
+         
       3. 结果处理
       在SortField里面有很多静态常量来提供给排序器作为排序的依据：
    1.       SortField里的属性    	    Sort里的属性    	      含义      
@@ -137,12 +142,15 @@
       - 效果：实现了价格升序、销量降序、评分降序、综合排序和价格区间筛选的功能，优化了用户的搜索体验。
       一些题外话：在网上查阅资料的时候发现有个lupyne的库，它的介绍如下：
       > Lupyne first provides a unified search interface.The search method allows lucene Sort parameters to be passed through, since that's still optimal.Additionally the hits themselves can be sorted afterwards with any python callable key.The IndexSearcher.comparator method is convenient for creating a sort key table from indexed fields.The upshot is custom sorting and sorting large results are both easier and faster.
+      
       因为lucene虽然有它的优点，但不足仍然不可忽视，比如：必须设置最大结果显示数，如果过大会由于它是预先分配，再排序，而造成结果不准确；比较算法中调用VM的时间复杂度是O(nlogn)，比scoredocs的迭代要复杂得多。最后我安装了lupyne库，并尝试使用它搜索和排序：
+          ```python
           hits = indexer.search(sort='price')
           comparator = indexer.comparator('price')	#建立关于价格排序的比较器
           hits = indexer.search().sorted(comparator.__getitem__)	#根据该比较器进行排序
+          ```
       效果很不错，但是由于与已经建立的index商品索引很难对接，没有继续使用下去这个方法。如果后续有时间，会继续对其进行研究和应用。
-   1. 图像搜索
+### 图像搜索
    - 实现方法：
      1. 图片整体特征提取
         由于在香水时代匹配的都是特征较好的、没有干扰特征的图片、所以可以从整体上进行特征把握，所以我建立颜色直方图，并将结果进行差分哈希映射，并把预处理结果保存pkl文件。
